@@ -1,0 +1,493 @@
+\documentclass{article}
+
+% Remove all section numbers everywhere
+\setcounter{secnumdepth}{0}
+
+\newcommand{\st}{\textsuperscript{st}}
+\newcommand{\nd}{\textsuperscript{nd}}
+\newcommand{\rd}{\textsuperscript{rd}}
+\renewcommand{\th}{\textsuperscript{th}}
+
+
+\usepackage[margin=1in]{geometry}
+\usepackage{accessibilityMeta}
+\usepackage{multicol}
+
+\usepackage{tikz}
+\usepackage{/usr/share/texmf/tex/latex/pgf-pie/pgf-pie}
+\newcommand{\pieslicecaption}[3]{{#1, \dollar{#2}, \SI{#3}{\percent}}}
+
+\usepackage{siunitx}
+% Configure siunitx for money
+\sisetup{
+  group-four-digits = true,
+  group-separator = {,}
+}
+
+% Define helper for writing money: \dollar{4}
+\newcommand{\dollar}[1]{\SI{#1}[\$]{}}
+
+\usepackage{intcalc}
+\usepackage{xstring}
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+\newcounter{goal}[section]
+\newcommand{\Goal}[3]{
+	\refstepcounter{goal}
+	\subsection{Goal \arabic{goal}}
+	\begin{quote}
+		#1
+	\end{quote}
+	State and/or Local Priorities addressed by this goal:
+	\begin{quote}
+		\begin{itemize}[label={}]
+		\item State Priorities: #2
+		\item Local Priorities: #3
+		\end{itemize}
+	\end{quote}
+}
+
+% Remove space between list items
+%\setlist{noitemsep}
+
+% Define Expected:/Actual: alternating enumeration labels.
+% Use \begin{enumerate}[label=\expact]
+\makeatletter
+\newcommand*{\expact}[1]{%
+	\expandafter\@expact\csname c@#1\endcsname%
+}
+\newcommand*{\@expact}[1]{%
+% wrapped in $...$ and \text to compel align right
+	$\ifcase\intcalcSub{2}{\intcalcMod{#1}{2}}\or{\text{Expected:}}\or{\text{Actual:}}
+    \else\@ctrerr\fi$
+}
+\AddEnumerateCounter{\expact}{\@expact}{Expected:}
+\makeatother
+
+
+\newcommand{\outcomepair}[2]{
+	\item #1
+	\item #2
+	\bigskip
+}
+
+\newenvironment{outcomes}
+	{
+		\subsection{Annual Measurable Outcomes}
+		\begin{enumerate}[label=\expact*]
+		\setlength{\itemsep}{0pt}
+	}
+	{\end{enumerate}}
+
+
+\newcounter{action}[goal]
+
+\newcommand{\actionupdate}[4]{
+	\stepcounter{action}
+	\paragraph{Action \theaction}
+	\begin{itemize}[label={}]
+		\item Planned Actions/Services: #1
+		\item Actual Actions/Services: #2
+		\item Budgeted Expenditures: 
+			\ifnum0<0#3\relax
+				\dollar{#3}
+			\else
+				#3
+			\fi
+		\item Estimated Actual Expenditures: 
+			\ifnum0<0#4\relax
+				\dollar{#4}
+			\else
+				#4
+			\fi
+	\end{itemize}
+}
+
+% TODO: Consider porting to action counter, but might not be necessary
+\newenvironment{actionanalysis}
+	{
+		\begin{enumerate}[label={\bf Action \theenumi:}]
+	}
+	{\end{enumerate}}
+
+\begin{document}
+\section{LCFF Budget Overview for Parents}
+Local Educational Agency (LEA) Name: Sherman Thomas STEM Academy\newline
+CDS Code: 20-65243-0134510\newline
+Local Control and Accountability Plan (LCAP) Year: 2019-20\newline
+LEA contact information: Jamie Brock, 559-871-5490, jabrock\@stcsca.org\newline
+
+School districts receive funding from different sources: state funds under the Local Control Funding Formula (LCFF), other state funds, local funds, and federal funds. LCFF funds include a base level of funding for all LEAs and extra funding---called "supplemental and concentration" grants---to LEAs based on the enrollment of high needs students (foster youth, English learners, and low-income students).
+
+\subsection{Budget Overview for the 2019-20 LCAP Year}
+\begin{figure}
+\begin{tikzpicture}
+	\title{Projected Revenue by Fund Source}
+	\pie[explode=0.2, radius=2, rotate=150, text=pin, before number=\phantom, after number=]{
+		3/\pieslicecaption{All federal funds}{21949}{3},
+		15/\pieslicecaption{All local funds}{92631}{15},
+		% fudged for visibility
+		0.3/\pieslicecaption{All other state funds}{2000}{0},
+		81.7/\pieslicecaption{Total LCFF funds}{520717}{82}
+	}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\pie[explode=0.2, radius=2, text=pin, before number=\phantom, after number=]{
+		9/\pieslicecaption{LCFF supplemental \& concentration grants}{54102}{9},
+		73/\pieslicecaption{All Other LCFF funds}{466615}{73}
+	}
+	%\caption{This chart shows the total general purpose revenue Sherman Thomas STEM Academy expects to receive in the coming year from all sources.}
+\end{tikzpicture}
+\end{figure}
+
+The total revenue projected for Sherman Thomas STEM Academy is \dollar{637297.00}, of which \dollar{520717.00} is Local Control Funding Formula (LCFF), \dollar{2000.00} is other state funds, \dollar{92631.00} is local funds, and \dollar{21949.00} is federal funds. Of the \dollar{520717.00} in LCFF Funds, \dollar{54102.00} is generated based on the enrollment of high needs students (foster youth, English learner, and low-income students).
+
+The LCFF gives school districts more flexibility in deciding how to use state funds. In exchange, school districts must work with parents, educators, students, and the community to develop a Local Control and Accountability Plan (LCAP) that shows how they will use these funds to serve students.
+
+%TODO===========
+
+Complete the budget section
+
+Fix pie charts and other graphs
+
+\newpage
+
+% TODO: consider using \maketitle
+\section{Local Control Accountability Plan and Annual Update (LCAP) Template}
+
+\begin{itemize}[label={},noitemsep]
+	\item LEA Name: Sherman Thomas STEM Academy
+	\item Contact Name and Title: Jamie Brock, Principal
+	\item Email and Phone: jabrock\@stcsca.org; 559-871-5490
+	\item LCAP Year: 2019--20
+\end{itemize}
+
+% TODO: Make links
+\begin{itemize}[label={},noitemsep]
+	\item Addendum: General instructions \& regulatory requirements.
+	\item Appendix A: Priorities 5 and 6 Rate Calculations
+	\item Appendix B: Guiding Questions: Use as prompts (not limits)
+	\item California School Dashboard: Essential data to support completion of this LCAP. Please analyze the LEA's full data set; specific links to the rubrics are also provided within the template.
+\end{itemize}
+
+\section{2017--20 Plan Summary}
+\subsection{The Story}
+Describe the students and community and how the LEA serves them.
+\begin{quote}
+	We are a new small STEM (Science, Technology, Engineering, and Mathematics) middle school, serving 75 students in grades six, seven, and eight with a college and career emphasis. Our grand opening was August 21, 2017. Our student demographic information is \SI{64}{\percent} Hispanic, \SI{30}{\percent} Caucasian, \SI{3}{\percent} African American, \SI{3}{\percent} Asian, and \SI{50}{\percent} of our students are unduplicated (English Learners, free/reduced lunch, foster/homeless youth).
+
+	One of the things that is exciting about our demographic is that it truly is a cross-section of Madera. Our students do not all live in the same area because attending our schools is not based on a child's address (although preference is given to all students living within Madera Unified School District). Of our current 75 students, we have students who have come from 17 different schools (public, public charter, and private) within Madera. This provides a great opportunity for creating a community celebrating differences.
+
+	Something that makes us unique is that we are the first STEM school in our county. We believe in an integrative instructional model where we apply the principles of the subjects of STEM, Science (hypothesizing and investigating), Technology (improvements that foster ease of a task), Engineering (design process), and Mathematics (identifying problems and persevering to solve them) in all subject areas. Our motto, Dream it, Think it, Do it, is a constant focal point. The lessons are designed to be engaging and interactive with our Fridays, which are specifically set aside for hands on projects, college and career emphasis, field trips, and guest speakers. We are excited to bring these opportunities to the children of our entire community.
+\end{quote}
+
+\subsection{LCAP Highlights}
+\begin{quote}
+	{\bf 2017--2020 LCAP Goals:}
+	\begin{enumerate}
+		\item To prepare students through rigorous and relevant content, to be productive and successful citizens by developing a strong work ethic, and the higher level critical thinking skills needed to solve problems in the 21\st century world.
+		\item For all parents to embrace their VOICE (Volunteer, Outings, Inform, Challenge Days, Engage)
+		\item To provide a safe, positive, organized setting with clearly defined behavior expectations where effective character education enhances the academic program, while developing habits of professionalism.
+	\end{enumerate}
+	Being a small school, there is not a lot of revenue, but small class and school size is important to our parents and staff. A key element of our school, that with the exception of salaries and our facility lease, has the largest apportionment of our funds, is our field trip program. We believe it is vital to a child's education to foster higher-level critical thinking skills, and a well-rounded character education program that focuses on professionalism to get students ``in the field.'' In year one (2017--18), all students got to go to 3 college campuses (Reedley College, Fresno State University, and California Polytechnic University San Luis Obispo), 4 community business trips, and 3 enrichment field trips, including Knott's Berry Farm for their Middle School Physics Day and Medieval Times. This current year (2019--19) students visited 4 college campuses (Fresno City, UC Merced, UC Davis, and the California Health Science University), 7 local businesses, and went on 2 enrichment trips. College, and careers to a different extent, seem far away and mysterious to students in this age group in our community. We want kids to see these possibilities as accessible and to understand there are steps they can take, even now, in middle school, to put them on a realistic pathway toward their dreams. We not only wish to open their minds to these possibilities but help build habits they can use on their way through high school and college or higher education training programs. This is a key to our program and is a continued goal for this year. We will be visiting 3 college campuses (Madera Community College Center, Fresno Pacific University, and Stanford University) at least 3 local businesses, and taking all students to a science camp.
+\end{quote}
+
+\subsection{Review of Performance}
+
+Based on a review of performance on the state indicators and local performance indicators included in the California School Dashboard, progress toward LCAP goals, local self-assessment tools, stakeholder input, or other information, what progress is the LEA most proud of and how does the LEA plan to maintain or build upon that success? This may include identifying any specific examples of how past increases or improvements in services for low-income students, English learners, and foster youth have led to improved performance for these students.
+\subsubsection{Greatest Progress}
+\begin{quote}	
+	We have had a great second year at the Academy. Our year one test scores were the highest in our city, which we are using as a motivator for our 2018--19 testing (which has not yet begun, and therefore we do not have results). We encourage our students to work hard every day---that's what it means to be a Raven. We are proud to have reached all expected measurable outcomes set forth in the previous year's LCAP that we have data on at this point. On local assessments, \SI{75}{\percent} of our students have grown at least one year and/or are at grade level in reading and mathematics, school wide. Over \SI{90}{\percent} of our Stakeholders report being highly satisfied with our school.
+\end{quote}
+
+Referring to the California School Dashboard, identify any state indicator or local performance indicator for which overall performance was in the ``Red'' or ``Orange'' category or where the LEA received a ``Not Met'' or ``Not Met for Two or More Years'' rating. Additionally, identify any areas that the LEA has determined need significant improvement based on review of local performance indicators or other local indicators. What steps is the LEA planning to take to address these areas with the greatest need for improvement?
+\subsubsection{Greatest Needs}
+\begin{quote}
+	Since 2017--18 was our school's first year of existence, we do not have any ``red'' or ``orange'' performance categories. Last year was our school's first time taking the CAASPP, so our scores are being used as baseline data. This year, 2018--19 will be our first chance to show increase or decline, and therefore will be our first time having ``colors''. That being said, we do have areas of concern that we as a staff are working to address. While we met our goal of \SI{75}{\percent} of students growing a minimum of one year and/or being at grade level in reading and math, we barely met it (\SI{74.8}{\percent}). We see this as an area for us to work on and are looking for ways to improve. This was a \SI{4.78}{\percent} increase over last year, but we were hoping to see greater growth.
+\end{quote}
+
+Referring to the California School Dashboard, identify any state indicator for which performance for any student group was two or more performance levels below the ``all student'' performance. What steps is the LEA planning to take to address these performance gaps?
+\subsubsection{Performance Gaps}
+\begin{quote}
+	Since 2017--18 was our first year testing and we do not have data for 2018--19 yet, we don't have any state indicators on the Dashboard. That being said, I do have data broken down by subgroup for the 2017--18 results (we have not yet done our 2018--19 testing). Overall, our school had \SI{74}{\percent} of our students meet/exceed standard in English and \SI{55}{\percent} met/exceeded standard in math. We had several subgroups that performed below this---which I would see as a gap to be addressed. Our Hispanic students were \SI{5}{\percent} below in English and \SI{6}{\percent} below in Math. Our socio-economically disadvantaged students were \SI{7}{\percent} below in English and \SI{22}{\percent} below in math (this is the biggest and most concerning gap). Our boys were also \SI{4}{\percent} below in English and \SI{6}{\percent} below in Math. Our highest performing subgroup in Math was our white students, with \SI{68}{\percent} meeting/exceeding standard and our girls, with \SI{64}{\percent}. Our highest performing sub-group in English were our RFEP students, with \SI{91}{\percent} meeting/exceeding standard. Most of our sub-groups were within \SI{10}{\percent} of our overall score, which I don't consider to be a significant performance gap.
+\end{quote}
+
+\subsection{Comprehensive Support and Improvement}
+An LEA with a school or schools identified for comprehensive support and improvement (CSI) under the Every Student Succeeds Act must respond to the following prompts.
+
+\subsubsection{Schools Identified}
+Identify the schools within the LEA that have been identified for CSI.
+\begin{quote}
+	No schools within the LEA have been identified for CSI
+\end{quote}
+
+\subsubsection{Support for Identified Schools}
+Describe how the LEA supported the identified schools in developing CSI plans that included a school-level needs assessment, evidence-based interventions, and the identification of any resource inequities to be addressed through the implementation of the CSI plan.
+\begin{quote}
+	NA
+\end{quote}
+
+\subsubsection{Support for Identified Schools}
+Describe how the LEA will monitor and evaluate the implementation and effectiveness of the CSI plan to support student and school improvement.
+\begin{quote}
+	NA
+\end{quote}
+
+\section{Annual Update}
+{\bf LCAP Year Reviewed: 2018--19}\newline
+Complete a copy of the following table for each of the LEA's goals from the prior year LCAP. Duplicate the table as needed.
+
+\Goal %1
+	{To prepare students, through rigorous and relevant content, to be productive and successful citizens by developing a strong work ethic and the higher-level critical thinking skills needed to solve problems in the 21\st century world.}
+	{1, 2, 4, 7, 8}
+	{}
+
+\begin{outcomes}
+	\outcomepair
+		{Teacher Certification: \SI{100}{\percent} appropriately assigned and fully credentialed.}
+		{\SI{100}{\percent} appropriately assigned and fully credentialed.}
+	\outcomepair
+		{Instructional Materials Quarterly Self Audit: ALL students will have access to standards-aligned instructional materials.}
+		{All students had access to standards-aligned instructional materials.}
+	\outcomepair
+		{CAASPP Results: \SI{98}{\percent} Participation Rate. To be in the ``increased level'' for mean distance from Level 3 in ELA and Math.}
+		{Pending test results (students test in May)}
+	\outcomepair
+		{CELDT Results: \SI{70}{\percent} of EL pupils will grow one level or be re\-designated.}
+		{Pending test results (students test at end of April)}
+	\outcomepair
+		{Renaissance Results: \SI{75}{\percent} of students will be at grade level in ELA and Math and/or grow a minimum of 1 year.}
+		{\SI{74.8}{\percent} of students were at grade level in ELA and Math and/or grew a minimum of 1 year.}
+\end{outcomes}
+
+\subsubsection{Actions/Services}
+Duplicate the Actions/Services from the prior year LCAP and complete a copy of the following table for each. Duplicate the table as needed.
+\actionupdate
+	{Teacher contracts (including principal/teacher combo role) -- salary + benefits. (Only \SI{90.2}{\percent} of 6\th grade teacher, as the remaining \SI{9.8}{\percent} is in a different action for intervention).}
+	{Teacher contracts (including principal/teacher combo role) -- salary + benefits. (Only \SI{90.2}{\percent} of 6\th grade teacher, as the remaining \SI{9.8}{\percent} is in a different action for intervention).}
+	{228701}
+	{242423}
+
+\actionupdate
+	{Weekly PLC meetings; outside professional development}
+	{Weekly PLC meetings; outside professional development}
+	{10000}
+	{8115.22}
+
+\actionupdate
+	{Technology infrastructure and support to ensure internet capability on all devices.}
+	{Technology infrastructure and support to ensure internet capability on all devices.}
+	{15000}
+	{11215}
+
+\actionupdate
+	{Intervention Program (\SI{9.8}{\percent}) of 6\th grade teacher's salary)}
+	{Intervention Program (\SI{9.8}{\percent}) of 6\th grade teacher's salary)}
+	{7292}
+	{8686}
+
+\actionupdate
+	{EL Coordinator}
+	{EL Coordinator}
+	{2000}
+	{\dollar{0} (embedded in salary)}
+
+\actionupdate
+	{Renaissance Program and End of Year Field Trip}
+	{Renaissance Program and End of Year Field Trip}
+	{8000}
+	{5739}
+
+\actionupdate
+	{Classified Employee working with students as a classroom aid in the morning.}
+	{Classified Employee working with students as a classroom aid in the morning.}
+	{5300}
+	{5300}
+
+\subsubsection{Analysis}
+Complete a copy of the following table for each of the LEA's goals from the prior year LCAP. Duplicate the table as needed. Use actual annual measurable outcome data, including performance data from the LCFF Evaluation Rubrics, as applicable.
+
+Describe the overall implementation of the actions/services to achieve the articulated goal.
+\begin{quote}
+	All stated actions were implemented to achieve the articulated goal.
+	\begin{actionanalysis}
+	\item \SI{100}{\percent} of teachers were appropriately assigned and fully credentialed.
+	\item Teaching staff met at least weekly both formally and ad-hoc to discuss planning, student achievement, teaching strategies, classroom management, and other areas of strengths and weaknesses as they arose. Our entire team attended the International Literacy Association Conference and our principal attended the Charter School Development Leadership Update Conference.
+	\item All technology has been purchased and the infrastructure is in place to support all students being able to be on a device with internet at one time. Our contract for tech support, through Madera County Superintendent of Schools allows us to ensure that all updates are done in a timely manner---for both testing purposes as well as student safety (filtration system).
+	\item We implemented and ran an intervention program the last 45 minutes of each day Monday -- Thursday that focused on a variety of topics based on highest need as observed by each classroom teacher.
+	\item Our EL Coordinator attended all trainings, monitored progress of EL students, and administered the ELPAC test.
+	\item We purchased the Renaissance Program to monitor and track student achievement as measured by reading and math levels and administered the tests throughout the year to monitor growth. We will be taking students who have met the goal on an end of year reward trip.
+	\item One of our classified employees works with students as a classroom aid each morning, assisting students with questions and comprehension in science.
+	\end{actionanalysis}
+\end{quote}
+
+Describe the overall effectiveness of the actions/services to achieve the articulated goal as measured by the LEA.
+\begin{quote}
+	Through the above mentioned actions we believe that we were able to achieve our expected annual measurable outcomes as we continue to strive to fully reach this goal. There is still room for growth, but we have met our year one and two outcomes. There are still some areas that we do not know the results of yet, but we have achieved all outcomes that we have information for at this time. We believe that by continuing to reach for and achieve these specific measurable outcomes, that we will reach our goal of preparing students for the 21\st century world.
+\end{quote}
+
+Explain material differences between Budgeted Expenditures and Estimated Actual Expenditures.
+\begin{quote}
+	We are still calculating final expenditures, but at this time, there do not appear to be any material differences between Budget Expenditures and Estimated Actual Expenditures. One area that changed this year is the EL Stipend. In 2017--18, it was a stipend and that was the plan at the beginning of this year. Instead, the job duty was added to the teacher's contract and she was given a raise. Our estimated actuals, for this goal, are approximately \dollar{5000} higher than budgeted, which is mainly due to a higher than anticipated cost in employee benefits. Projections were based off of approximately \SI{30}{\percent} of an employee's salary, when in reality it was closer to \SI{37}{\percent} due to rising costs.
+\end{quote}
+
+Describe any changes made to this goal, expected outcomes, metrics, or actions and services to achieve this goal as a result of this analysis and analysis of the LCFF Evaluation Rubrics, as applicable. Identify where those changes can be found in the LCAP.
+\begin{quote}
+	We have not made any changes to this goal and will continue to work hard to achieve it. The only change that has been made for 2019--20, is that the EL Coordinator has a \dollar{0} cost because it is embedded into the teacher's salary.
+\end{quote}
+
+\Goal
+	{For all parents to embrace their VOICE (Volunteer, Outings, Inform, Challenge Days, Engage) at STA}
+	{3}
+	{}
+
+\begin{outcomes}
+	\outcomepair
+	{\SI{65}{\percent} Parent Participation in at least one of our evening events}
+	{\SI{89}{\percent} Parent Participation in at least one of our evening events}
+	\outcomepair
+	{\SI{20}{\percent} Parent Participation in at least one challenge day and/or field trip}
+	{\SI{36}{\percent} Parent Participation in at least one challenge day and/or field trip}
+	\outcomepair
+	{\SI{30}{\percent} Parent Participation in at least one STAff chat}
+	{\SI{44}{\percent} Parent Participation in at least one STAff Chat}
+	\outcomepair
+	{\SI{45}{\percent} Parent Participation in one or more parent-teacher conferences during the year}
+	{\SI{87}{\percent} Parent Participation in one or more parent-teacher conferences during the year}
+\end{outcomes}
+
+\subsubsection{Actions/Services}
+Duplicate the Actions/Services from the prior year LCAP and complete a copy of the following table for each. Duplicate the table as needed.
+\actionupdate
+	{Parent communication (Promote a culture providing ways for parents to be involved)}
+	{Parent Communication (Promoted a culture providing ways for parents to be involved)}
+	{\dollar{0} (embedded in salaries)}
+	{\dollar{0} (embedded in salaries)}
+
+\actionupdate
+	{Parent Communication (email, newsletters, Facebook, etc.)}
+	{Parent Communication (email, newsletters, Facebook, Remind, etc.)}
+	{\dollar{0} (embedded in salaries)}
+	{\dollar{0} (embedded in salaries)}
+
+\subsubsection{Analysis}
+Complete a copy of the following table for each of the LEA's goals from the prior year LCAP. Duplicate the table as needed. Use actual annual measurable outcome data, including performance data from the LCFF Evaluation Rubrics, as applicable.
+
+Describe the overall implementation of the actions/services to achieve the articulated goal.
+\begin{quote}
+	All actions were implemented to achieve this articulated goal.
+	\begin{actionanalysis}
+	\item Parents were informed, on a regular basis, of ways that they could be involved at the school. Almost half attended a monthly STAff chat, to provide input on the running of the school and LCAP. \SI{89}{\percent} participated in an evening event with their families. \SI{36}{\percent} helped with a field trip and/or challenge day. Multiple avenues for active parent involvement were regularly presented and parents participated.
+	\item Parents were communicated with frequently. At the end of every week the principal sent an email highlighting events of the week, which included pictures, to help with discussions in the home. The principal also posted multiple pictures and videos on Facebook (weekly). At the beginning of each week the principal emailed all parents important information for the week, including meetings, practices, field trips, and ways to be involved. A quarterly newsletter was given out at each family night. All teachers notified parents on a weekly basis of all homework for the week. Lastly, parents received a packet every Monday with a grade check and all work from the previous week (including teacher feedback). In our 2018--19 parent survey, the most common thing that was mentioned that we do well is communication. Parents feel informed and they like it.
+	\end{actionanalysis}
+\end{quote}
+
+Describe the overall effectiveness of the actions/services to achieve the articulated goal as measured by the LEA.
+\begin{quote}
+	Our goal was for all parents to embrace their VOICE at STA and I believe we have achieved this goal. For the second year in a row, we exceeded our expected measurable outcomes, in each area. Our parents have repeatedly voiced how much they love our school and their sadness that it is only a 3 year program. I feel confident they have embraced their VOICE at STA through the culture we have created from frequent communication.
+\end{quote}
+
+Explain material differences between Budgeted Expenditures and Estimated Actual Expenditures.
+\begin{quote}
+	There are no material differences between Budgeted Expenditures and Estimated Actual Expenditures because there are no expenditures. The amount budgeted is \dollar{0}---it is embedded within the teacher salaries.
+\end{quote}
+
+Describe any changes made to this goal, expected outcomes, metrics, or actions and services to achieve this goal as a result of this analysis and analysis of the LCFF Evaluation Rubrics, as applicable. Identify where those changes can be found in the LCAP.
+\begin{quote}
+	The only change we are making is the addition of usage of the app ``Remind''. Some parents have voiced an interest in using a communication app, as a way of sending text alerts. We decided on Remind because most of our graduating 8\th graders will be going to schools within our authorizer's district and the high schools there use Remind. Other than that, we are making no changes. It is our goal to continue to foster an environment where parents feel that they are an integral part of our program and that they have a VOICE at STA.
+\end{quote}
+
+\Goal
+	{To provide a safe, positive, organized setting with clearly defined behavior expectations where effective character education enhances the academic program, while developing habits of professionalism.}
+	{1, 5, 6, 7}
+	{}
+
+\begin{outcomes}
+	\outcomepair
+	{Facility Evaluations: \SI{100}{\percent} of monthly evaluations will receive a ``good rating''}
+	{\SI{100}{\percent} of monthly evaluations received a good rating}
+	\outcomepair
+	{Attendance Rate: \SI{93}{\percent}}
+	{\SI{99}{\percent}}
+	\outcomepair
+	{Chronic Absenteeism: Less than \SI{3}{\percent}}
+	{\SI{0}{\percent}}
+	\outcomepair
+	{Middle School Dropout Rate: Less than \SI{1.5}{\percent}}
+	{\SI{0}{\percent}}
+	\outcomepair
+	{Pupil Suspension Rate: Less than \SI{6}{\percent}}
+	{\SI{4}{\percent}}
+	\outcomepair
+	{Pupil Expulsion Rate: Less than \SI{1.5}{\percent}}
+	{\SI{0}{\percent}}
+	\outcomepair
+	{School Climate Survey to all Stakeholders: \SI{80}{\percent} Satisfaction}
+	{\SI{94}{\percent} Overall satisfaction on school climate survey}
+	\outcomepair
+	{Diverse Enrichment Field Trips and Opportunities: 3 colleges, 3 community businesses, and 1 enrichment standards aligned field trip}
+	{4 colleges, 7 community businesses, and 1 enrichment standards aligned field trip}
+\end{outcomes}
+
+\subsubsection{Actions/Services}
+Duplicate the Actions/Services from the prior year LCAP and complete a copy of the following table for each. Duplicate the table as needed.
+
+\actionupdate
+	{Facility Lease}
+	{Facility Lease}
+	{72000}
+	{72000}
+
+\actionupdate
+	{Student Study Team}
+	{Student Study Team}
+	{0}
+	{0}
+
+\actionupdate
+	{School Climate Survey}
+	{School Climate Survey}
+	{0}
+	{0}
+
+\actionupdate
+	{Field Trip Program: Costs to cover transportation, food, and admission for all students}
+	{Field Trip Program: Cost covered transportation, food, and admission for all students}
+	{25000}
+	{17655}
+
+\subsubsection{Analysis}
+Complete a copy of the following table for each of the LEA's goals from the prior year LCAP. Duplicate the table as needed. Use actual annual measurable outcome data, including performance data from the LCFF Evaluation Rubrics, as applicable.
+
+Describe the overall implementation of the actions/services to achieve the articulated goal.
+\begin{quote}
+	All actions were implemented to achieve the articulated goal.
+	\begin{actionanalysis}
+	\item We have secured a long-term facility lease in a building that is perfectly suited and designed to meet our needs. Through the Walton Family Foundation Grant, we were able to fund landscaping and a recreational area for the students, which has fostered character education. We have taught our students what it means to take care of their belongings and they are doing a great job.
+	\item Our Student Study Team has met with students for academic, behavior, and attendance issues to work on strategies for improvement in the area of concern.
+	\item We conducted a school climate survey with our parents as well as students. \SI{94}{\percent} of those surveyed reported being satisfied with our overall program. \SI{94}{\percent} of our parents reported that their child feels safe at school.
+	\item We implemented and fully ran our field trip program. All students went to 4 colleges, 7 local businesses, and participated in 2 enrichment field trips for a total of 13 field trips.
+	\end{actionanalysis}
+\end{quote}
+
+Describe the overall effectiveness of the actions/services to achieve the articulated goal as measured by the LEA.
+\begin{quote}
+	We exceeded every expected annual measurable outcome set for the 2018--19 school year. All field trips were designed to enhance character education and/or develop habits of professionalism. We believe providing these opportunities brings meaning to the classroom and context. Having adults share the importance of education and constantly showing students the ``end game'' helps with motivation. We have an excellent attendance rate, minimal suspension, and very few behavior issues. We have worked hard to create a culture of excellence where students feel safe and strive to do their best.
+\end{quote}
+
+Explain material differences between Budgeted Expenditures and Estimated Actual Expenditures.
+\begin{quote}
+	We are still calculating final expenditures, but at this time, there do not appear to be any material differences between Budget Expenditures and Estimated Actual Expenditures.
+\end{quote}
+
+Describe any changes made to this goal, expected outcomes, metrics, or actions and services to achieve this goal as a result of this analysis and analysis of the LCFF Evaluation Rubrics, as applicable. Identify where those changes can be found in the LCAP.
+\begin{quote}
+	No changes were made to this goal, expected outcomes, metrics, or actions and services.
+\end{quote}
+
+\section{Stakeholder Engagement}
+
+
+\end{document}
