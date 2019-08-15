@@ -13,6 +13,11 @@
 \usepackage{accessibilityMeta}
 \usepackage{multicol}
 \usepackage{verbatim}
+\usepackage{caption}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=newest}
 
 \usepackage{titlesec}
 \newcommand{\sectionbreak}{\clearpage}
@@ -250,67 +255,81 @@
 \begin{document}
 
 \section{LCFF Budget Overview for Parents}
-Local Educational Agency (LEA) Name: Sherman Thomas STEM Academy\newline
-CDS Code: 20-65243-0134510\newline
-Local Control and Accountability Plan (LCAP) Year: 2019-20\newline
-LEA contact information: Jamie Brock, 559-871-5490, jabrock\@stcsca.org\newline
+\begin{itemize}[noitemsep,label={}]
+\item Local Educational Agency (LEA) Name: Sherman Thomas STEM Academy
+\item CDS Code: 20-65243-0134510
+\item Local Control and Accountability Plan (LCAP) Year: 2019--20
+\item LEA contact information: Jamie Brock, 559-871-5490, jabrock\@stcsca.org
+\end{itemize}
 
 School districts receive funding from different sources: state funds under the Local Control Funding Formula (LCFF), other state funds, local funds, and federal funds. LCFF funds include a base level of funding for all LEAs and extra funding---called ``supplemental and concentration'' grants---to LEAs based on the enrollment of high needs students (foster youth, English learners, and low-income students).
 
 \subsection{Budget Overview for the 2019-20 LCAP Year}
-\begin{figure}
-	\title{Projected Revenue by Fund Source}
+\begin{figure}[hbtp]
+\centering
+Projected Revenue by Fund Source
 	\begin{tikzpicture}
-	\pie[explode=0.2, radius=2, rotate=150, text=pin, before number=\phantom, after number=]{
+	\pie[explode=0.1, radius=2, rotate=0, text=legend, before number=\phantom, after number=]{
+		  0.7/\pieslicecaption{All other state funds}{2000}{0.3},
 		  3.4/\pieslicecaption{All federal funds}{21949}{3.4},
 		  8.5/\pieslicecaption{LCFF supplemental \& concentration grants}{54102}{9},
 		 14.5/\pieslicecaption{All local funds}{92631}{14.5},
-		  0.3/\pieslicecaption{All other state funds}{2000}{0.3},
 		%81.7/\pieslicecaption{Total LCFF funds}{520717}{81.7},
-		 73.2/\pieslicecaption{All Other LCFF funds}{466615}{73.2}
+		 72.8/\pieslicecaption{All Other LCFF funds}{466615}{73.2}
 	}
 	\end{tikzpicture}
-
-	%\begin{tikzpicture}
-	%\pie[explode=0.2, radius=2, text=pin, before number=\phantom, after number=]{
-	%	9/\pieslicecaption{LCFF supplemental \& concentration grants}{54102}{9},
-	%	73/\pieslicecaption{All Other LCFF funds}{466615}{73}
-	%}
-	%\end{tikzpicture}
-	\caption{This chart shows the total general purpose revenue Sherman Thomas STEM Academy expects to receive in the coming year from all sources.}
+	\caption*{This chart shows the total general purpose revenue Sherman Thomas STEM Academy expects to receive in the coming year from all sources.}
 \end{figure}
 
 The total revenue projected for Sherman Thomas STEM Academy is \dollar{637297.00}, of which \dollar{520717.00} is Local Control Funding Formula (LCFF), \dollar{2000.00} is other state funds, \dollar{92631.00} is local funds, and \dollar{21949.00} is federal funds. Of the \dollar{520717.00} in LCFF Funds, \dollar{54102.00} is generated based on the enrollment of high needs students (foster youth, English learner, and low-income students).
 
 The LCFF gives school districts more flexibility in deciding how to use state funds. In exchange, school districts must work with parents, educators, students, and the community to develop a Local Control and Accountability Plan (LCAP) that shows how they will use these funds to serve students.
 
-%TODO===========
+\begin{figure}[h!btp]
+\centering
+\includegraphics[scale=0.8]{expend}
+\caption*{This chart provides a quick summary of how much Sherman Thomas STEM Academy plans to spend for 2019--20. It shows how much of the total is tied to planned actions and services in the LCAP.}
+\end{figure}
 
-Complete the budget section
-
-Fix pie charts and other graphs
-
-\newpage
-
-
-
-% TODO: consider using \maketitle
-\section{Local Control Accountability Plan and Annual Update (LCAP) Template}
-
-\begin{itemize}[label={},noitemsep]
-	\item LEA Name: Sherman Thomas STEM Academy
-	\item Contact Name and Title: Jamie Brock, Principal
-	\item Email and Phone: jabrock\@stcsca.org; 559-871-5490
-	\item LCAP Year: 2019--20
+Sherman Thomas STEM Academy plans to spend \dollar{637297.00} for the 2019--20 school year. Of that amount, \dollar{411900.00} is tied to actions/services in the LCAP and \dollar{225397.00} is not included in the LCAP. The budgeted expenditures that are not included in the LCAP will be used for the following:
+\begin{itemize}[noitemsep]
+	\item Salaries (office manager and part time: yard duty, director, district secretary, maintenance, janitorial)
+	\item Facility Costs (electricity, phones, repair)
+	\item Contracts (legal fees, SIS, oversight fees)
+	\item Classroom and Office Supplies
 \end{itemize}
 
-% TODO: Make links
-\begin{itemize}[label={},noitemsep]
-	\item Addendum: General instructions \& regulatory requirements.
-	\item Appendix A: Priorities 5 and 6 Rate Calculations
-	\item Appendix B: Guiding Questions: Use as prompts (not limits)
-	\item California School Dashboard: Essential data to support completion of this LCAP. Please analyze the LEA's full data set; specific links to the rubrics are also provided within the template.
-\end{itemize}
+\subsection{Increased or Improved Services for High Needs Students in 2019--20}
+In 2019--20, Sherman Thomas STEM Academy is projecting it will receive \dollar{54102.00} based on the enrollment of foster youth, English learner, and low-income students. Sherman Thomas STEM Academy must demonstrate the planned actions and services will increase or improve services for high needs students compared to the services all students receive in proportion to the increased funding it receives for high needs students. In the LCAP, Sherman Thomas STEM Academy plans to spend \dollar{59918.00} on actions to meet this requirement.
+
+\begin{figure}[h!btp]
+\centering
+\includegraphics[scale=0.8]{serv}
+\caption*{This chart compares what Sherman Thomas STEM Academy budgeted last year in the LCAP for actions and services that contribute to increasing or improving services for high needs students with what  Sherman Thomas STEM Academy estimates it has spent on actions and services that contribute to increasing or improving services for high needs students in the current year.}
+\end{figure}
+
+In 2018--19, Sherman Thomas STEM Academy's LCAP budgeted \dollar{53579.00} for planned actions to increase or improve services for high needs students. Sherman Thomas STEM Academy estimates that it will actually spend \dollar{45495.00} for actions to increase or improve services for high needs students in 2018--19. The difference between the budgeted and actual expenditures of \dollar{8084.00} had the following impact on Sherman Thomas STEM Academy's ability to increase or improve services for high needs students:
+ 
+\begin{quotation}
+The difference in spending did not impact the actions and services for high needs students. Our field trip costs ended up being much lower than originally anticipated (we budgeted on group discount numbers---not school group), even with us attending three more field trips than originally planned. Also, we no longer pay an EL Coordinator stipend, but rather it is an additional listed job duty on the teacher's contract. Our contract for our reading and math program was also cheaper than originally anticipated. We completed all actions listed in our LCAP and exceeded all goals, with less money being expended.
+\end{quotation}
+
+\title{Local Control Accountability Plan and Annual Update (LCAP) Template}
+\author{
+%\begin{itemize}[label={},noitemsep]
+	%\item LEA Name: Sherman Thomas STEM Academy
+	%\item Contact Name and Title: Jamie Brock, Principal
+	%\item Email and Phone: jabrock\@stcsca.org; 559-871-5490
+	%\item LCAP Year: 2019--20
+%\end{itemize}
+LEA Name: Sherman Thomas STEM Academy\\
+Contact Name and Title: Jamie Brock, Principal\\
+Email and Phone: jabrock@stcsca.org; 559-871-5490\\
+LCAP Year: 2019--20
+}
+\date{}
+
+\maketitle
 
 \section{2017--20 Plan Summary}
 \subsection{The Story}
@@ -786,7 +805,9 @@ Complete a copy of the following table for each of the LEA's goals. Duplicate th
 	\planaction*
 	{Purchase Renaissance Learning for English and IXL for all subjects, to monitor growth of students in English and Mathematics. For all students who achieve their four-pronged individualized goal (AR points earned, reading level---grade level up and/or growth (using 2 measures---Renaissance and IXL), and math level---grade level up and/or growth) take an end of year reward trip.}
 	\planaction@scope
-	{English Learners, Foster Youth, and/or Low Income}{LEA-wide}{All Schools}
+	{English Learners, Foster Youth, and/or Low Income}
+	{LEA-wide}
+	{All Schools}
 	\planaction@action
 	{New}{Modified}{Modified}
 	{Renaissance Program and end of year reward trip}
@@ -990,10 +1011,9 @@ Complete a copy of the following table for each of the LEA's goals. Duplicate th
 	\planaction*
 	{ALL students will have access to our field trip and enrichment program that will include a minimum of 3 college campus visits, 3 community businesses, and 1 standards aligned enrichment field trip for no charge, ensuring equal access to all.}
 	\planaction@scope
-% FIXME: what
 	{English Learners, Foster Youth, and/or Low Income}
-	{English Learners, Foster Youth, and/or Low Income}
-	{English Learners, Foster Youth, and/or Low Income}
+	{LEA-wide}
+	{All Schools}
 	\planaction@action
 	{New}{Modified}{Modified}
 	{Field Trip program; costs to cover transportation, food, and admission for all students}
