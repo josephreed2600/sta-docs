@@ -6,7 +6,7 @@
 \newcommand{\st}{\textsuperscript{st}}
 \newcommand{\nd}{\textsuperscript{nd}}
 \newcommand{\rd}{\textsuperscript{rd}}
-\renewcommand{\th}{\textsuperscript{th}}
+\newcommand{\supth}{\textsuperscript{th}}
 
 \usepackage[english]{babel}
 \usepackage [latin1]{inputenc}
@@ -36,20 +36,29 @@
 
 % Define helper for writing money: \dollar{4}
 \newcommand{\dollar}[1]{\SI{#1}[\$]{}}
-\newcommand{\trydollar}[1]{
-	\ifnum9<1#1\relax\dollar{#1}
-	\else
-		#1
-	\fi
+\newcommand{\trydollar}[1]{%
+	\ifnum9<1#1\relax\dollar{#1}%
+	\else%
+		#1%
+	\fi%
 }
 
 \usepackage{intcalc}
 \usepackage{xstring}
 \usepackage{enumerate}
-\usepackage{enumitem}
+%\usepackage{enumitem}
 \usepackage{ifthen}
 \usepackage{xparse}
 \usepackage{etoolbox}
+
+% \item for bulleted
+% \item* for no marker
+\let\normalitem\item
+\RenewDocumentCommand{\item}{s}{
+	\IfBooleanTF{#1}
+	{\normalitem[{}]}
+	{\normalitem}
+}
 
 \newcounter{goal}[section] % section isn't resetting :(
 \pretocmd{\section}{\setcounter{goal}{0}}{}{} % https://tex.stackexchange.com/questions/264335/when-using-section-counters-dont-reset-properly-how-to-fix-this
@@ -67,9 +76,9 @@
 \newcommand{\Goal@priorities}[2]{
 	\subsubsection{State and/or Local Priorities addressed by this goal:}
 	\begin{quote}
-		\begin{itemize}[label={}]
-			\item State Priorities: #1
-			\item Local Priorities: #2
+		\begin{itemize}
+			\item* State Priorities: #1
+			\item* Local Priorities: #2
 		\end{itemize}
 	\end{quote}
 }
@@ -88,66 +97,65 @@
 
 % Define Expected:/Actual: alternating enumeration labels.
 % Use \begin{enumerate}[label=\expact]
-\newcommand*{\expact}[1]{%
-	\expandafter\@expact\csname c@#1\endcsname%
-}
-\newcommand*{\@expact}[1]{%
+%\newcommand*{\expact}[1]{%
+%	\expandafter\@expact\csname c@#1\endcsname%
+%}
+%\newcommand*{\@expact}[1]{%
 % wrapped in $...$ and \text to compel align right
-	$\ifcase\intcalcAdd{1}{\intcalcMod{\intcalcSub{#1}{1}}{2}}
-		\or{\text{Expected:}}
-		\or{\text{Actual:}}
-    \else\@ctrerr\fi$
-}
-\AddEnumerateCounter{\expact}{\@expact}{Expected:}
+%	$\ifcase\intcalcAdd{1}{\intcalcMod{\intcalcSub{#1}{1}}{2}}
+%		\or{\text{Expected:}}
+%		\or{\text{Actual:}}
+%    \else\@ctrerr\fi$
+%}
+%\AddEnumerateCounter{\expact}{\@expact}{Expected:}
 
 % Define Expected Annual Measurable Outcome table heading enumeration labels.
 % Use \begin{enumerate}[label=\expout]
-\newcommand*{\expout}[1]{%
-	\expandafter\@expout\csname c@#1\endcsname%
-}
-\newcommand*{\@expout}[1]{%
-% wrapped in $...$ and \text to compel align right
-	$\ifcase\intcalcAdd{1}{\intcalcMod{\intcalcSub{#1}{1}}{4}}
-		\or{\text{Baseline:}}
-		\or{\text{2017--18:}}
-		\or{\text{2018--19:}}
-		\or{\text{2019--20:}}
-    \else\@ctrerr\fi$
-}
-\AddEnumerateCounter{\expout}{\@expout}{Baseline:}
+%\newcommand*{\expout}[1]{%
+%	\expandafter\@expout\csname c@#1\endcsname%
+%}
+%\newcommand*{\@expout}[1]{%
+%% wrapped in $...$ and \text to compel align right
+%	$\ifcase\intcalcAdd{1}{\intcalcMod{\intcalcSub{#1}{1}}{4}}
+%		\or{\text{Baseline:}}
+%		\or{\text{2017--18:}}
+%		\or{\text{2018--19:}}
+%		\or{\text{2019--20:}}
+%    \else\@ctrerr\fi$
+%}
+%\AddEnumerateCounter{\expout}{\@expout}{Baseline:}
 \makeatother
 
 \newcommand{\outcome}[2]{
-	\item
-	\begin{enumerate}[label=\expact*]
+	\item*
+	\begin{itemize}
 	\setlength{\itemsep}{0pt}
-	\item #1
-	\item #2
-	\end{enumerate}
+	\item* Expected: #1
+	\item* Actual: #2
+	\end{itemize}
 }
 
 \newcommand{\expoutcome}[5]{
-	\item
+	\item*
 	{\em Metric/Indicator: #1}
-	\begin{enumerate}[label=\expout*]
-		\setlength\itemindent{40pt}
-		\item #2
-		\item #3
-		\item #4
-		\item #5
-	\end{enumerate}
+	\begin{itemize}
+		\item* Baseline: #2
+		\item* 2017--18: #3
+		\item* 2018--19: #4
+		\item* 2019--20: #5
+	\end{itemize}
 }
 \newenvironment{outcomes}
 	{
 		\subsubsection{Annual Measurable Outcomes}
-		\begin{itemize}[label={}]
+		\begin{itemize}
 	}
 	{\end{itemize}}
 
 \newenvironment{expoutcomes}
 	{
 		\subsubsection{Expected Annual Measurable Outcomes}
-		\begin{itemize}[label={}]
+		\begin{itemize}
 	}
 	{\end{itemize}}
 
@@ -157,52 +165,52 @@
 \newcommand{\actionupdate}[4]{
 	\stepcounter{action}
 	\paragraph{Action \theaction}
-	\begin{itemize}[label={}]
-		\item Planned Actions/Services: #1
-		\item Actual Actions/Services: #2
-		\item Budgeted Expenditures: 
+	\begin{itemize}
+		\item* Planned Actions/Services: #1
+		\item* Actual Actions/Services: #2
+		\item* Budgeted Expenditures: 
 			\trydollar{#3}
-		\item Estimated Actual Expenditures: 
+		\item* Estimated Actual Expenditures: 
 			\trydollar{#4}
 	\end{itemize}
 }
 
 \makeatletter
 \DeclareDocumentCommand{\planaction@scope}{m m g}{
-	\begin{itemize}[label={}]
-		\item {\bf Students to be Served:} #1
-			%\IfBooleanTF{#1}{\item {\bf Scope of Services:} #3}{}
+	\begin{itemize}
+		\item* {\bf Students to be Served:} #1
+		%\IfBooleanTF{#1}{\item* {\bf Scope of Services:} #3}{}
 		\IfNoValueTF{#3}{
-		\item {\bf Location(s):} #2
+		\item* {\bf Location(s):} #2
 		}{
-		\item {\bf Scope of Services:} #2
-		\item {\bf Location(s):} #3
+		\item* {\bf Scope of Services:} #2
+		\item* {\bf Location(s):} #3
 		}
 	\end{itemize}
 }
 \DeclareDocumentCommand{\planaction@action}{m m m m m m}{
 	\paragraph{Actions/Services}
-	\begin{itemize}[label={}]
-		\item 2017--18 (#1): #4
-		\item 2018--19 (#2): #5
-		\item 2019--20 (#3): #6
+	\begin{itemize}
+		\item* 2017--18 (#1): #4
+		\item* 2018--19 (#2): #5
+		\item* 2019--20 (#3): #6
 	\end{itemize}
 }
 \DeclareDocumentCommand{\planaction@budget@row}{m m m}{
-	\begin{itemize}[label={}]
-		\item Amount: \trydollar{#1}
-		\item Source: #2
-		\item Budget Reference: #3
+	\begin{itemize}
+		\item* Amount: \trydollar{#1}
+		\item* Source: #2
+		\item* Budget Reference: #3
 	\end{itemize}
 }
 \DeclareDocumentCommand{\planaction@budget}{m m m m m m m m m}{
 	\paragraph{Budgeted Expenditures}
-	\begin{itemize}[label={}]
-		\item Year: 2017--18
+	\begin{itemize}
+		\item* Year: 2017--18
 			\planaction@budget@row{#1}{#4}{#7}
-		\item Year: 2018--19
+		\item* Year: 2018--19
 			\planaction@budget@row{#2}{#5}{#8}
-		\item Year: 2019--20
+		\item* Year: 2019--20
 			\planaction@budget@row{#3}{#6}{#9}
 	\end{itemize}
 }
@@ -218,7 +226,7 @@
 		\subsubsection{Planned Actions/Services}
 		\IfNoValueF{#1}{#1}
 		\makeatletter
-		\begin{enumerate}[label={\bf Action \theenumi:}]
+		\begin{enumerate}[{\bf {Action} 1:}]
 	}
 	{
 		\end{enumerate}
@@ -228,7 +236,7 @@
 % TODO: Consider porting to action counter, but might not be necessary
 \newenvironment{actionanalysis}
 	{
-		\begin{enumerate}[label={\bf Action \theenumi:}]
+		\begin{enumerate}[{\bf {Action} 1:}]
 	}
 	{
 		\end{enumerate}
@@ -237,9 +245,9 @@
 \DeclareDocumentEnvironment{demIISUP}{m m m}
 	{
 		\subsection{LCAP Year: #1}
-		\begin{itemize}[label={}]
-		\item Estimated Supplemental and Concentration Grant Funds: \trydollar{#2}
-		\item Percentage to Increase or Improve Services: #3
+		\begin{itemize}
+		\item* Estimated Supplemental and Concentration Grant Funds: \trydollar{#2}
+		\item* Percentage to Increase or Improve Services: #3
 		\end{itemize}
 		Describe how services provided for unduplicated pupils are increased or improved by at least the percentage identified above, either qualitatively or quantitatively, as compared to services provided for all students in the LCAP year.
 
@@ -250,21 +258,21 @@
 		\end{quotation}
 	}
 \DeclareDocumentCommand{\iisup}{m m}{
-	\par{\bf #1 --\trydollar{#2}} 
+	\par{\bf #1 -- \trydollar{#2}} 
 }
 
 \usepackage[pdflang={en-US}]{hyperref}
-%\usepackage[tagged,highstructure]{accessibility}
-%\usepackage[tagged]{accessibility-meta}
 \usepackage[tagged,highstructure]{strucPDF}
+
 \begin{document}
 
 \section{LCFF Budget Overview for Parents}
-\begin{itemize}[noitemsep,label={}]
-\item Local Educational Agency (LEA) Name: Sherman Thomas STEM Academy
-\item CDS Code: 20-65243-0134510
-\item Local Control and Accountability Plan (LCAP) Year: 2019--20
-\item LEA contact information: Jamie Brock, 559-871-5490, jabrock@stcsca.org
+\begin{itemize}
+\setlength\itemsep{0em}
+\item* Local Educational Agency (LEA) Name: Sherman Thomas STEM Academy
+\item* CDS Code: 20-65243-0134510
+\item* Local Control and Accountability Plan (LCAP) Year: 2019--20
+\item* LEA contact information: Jamie Brock, 559-871-5490, jabrock@stcsca.org
 \end{itemize}
 
 School districts receive funding from different sources: state funds under the Local Control Funding Formula (LCFF), other state funds, local funds, and federal funds. LCFF funds include a base level of funding for all LEAs and extra funding---called ``supplemental and concentration'' grants---to LEAs based on the enrollment of high needs students (foster youth, English learners, and low-income students).
@@ -299,7 +307,8 @@ The LCFF gives school districts more flexibility in deciding how to use state fu
 \end{figure}
 
 Sherman Thomas STEM Academy plans to spend \dollar{637297.00} for the 2019--20 school year. Of that amount, \dollar{411900.00} is tied to actions/services in the LCAP and \dollar{225397.00} is not included in the LCAP. The budgeted expenditures that are not included in the LCAP will be used for the following:
-\begin{itemize}[noitemsep]
+\begin{itemize}
+\setlength\itemsep{0em}
 	\item Salaries (office manager and part time: yard duty, director, district secretary, maintenance, janitorial)
 	\item Facility Costs (electricity, phones, repair)
 	\item Contracts (legal fees, SIS, oversight fees)
@@ -325,10 +334,10 @@ The difference in spending did not impact the actions and services for high need
 \title{Local Control Accountability Plan and Annual Update (LCAP) Template}
 \author{
 %\begin{itemize}[label={},noitemsep]
-	%\item LEA Name: Sherman Thomas STEM Academy
-	%\item Contact Name and Title: Jamie Brock, Principal
-	%\item Email and Phone: jabrock\@stcsca.org; 559-871-5490
-	%\item LCAP Year: 2019--20
+	%\item* LEA Name: Sherman Thomas STEM Academy
+	%\item* Contact Name and Title: Jamie Brock, Principal
+	%\item* Email and Phone: jabrock\@stcsca.org; 559-871-5490
+	%\item* LCAP Year: 2019--20
 %\end{itemize}
 LEA Name: Sherman Thomas STEM Academy\\
 Contact Name and Title: Jamie Brock, Principal\\
@@ -433,8 +442,8 @@ Complete a copy of the following table for each of the LEA's goals from the prio
 \subsubsection{Actions/Services}
 Duplicate the Actions/Services from the prior year LCAP and complete a copy of the following table for each. Duplicate the table as needed.
 \actionupdate
-	{Teacher contracts (including principal/teacher combo role) -- salary + benefits. (Only \SI{90.2}{\percent} of 6\th grade teacher, as the remaining \SI{9.8}{\percent} is in a different action for intervention).}
-	{Teacher contracts (including principal/teacher combo role) -- salary + benefits. (Only \SI{90.2}{\percent} of 6\th grade teacher, as the remaining \SI{9.8}{\percent} is in a different action for intervention).}
+	{Teacher contracts (including principal/teacher combo role) -- salary + benefits. (Only \SI{90.2}{\percent} of 6\supth grade teacher, as the remaining \SI{9.8}{\percent} is in a different action for intervention).}
+	{Teacher contracts (including principal/teacher combo role) -- salary + benefits. (Only \SI{90.2}{\percent} of 6\supth grade teacher, as the remaining \SI{9.8}{\percent} is in a different action for intervention).}
 	{228701}
 	{242423}
 
@@ -451,8 +460,8 @@ Duplicate the Actions/Services from the prior year LCAP and complete a copy of t
 	{11215}
 
 \actionupdate
-	{Intervention Program (\SI{9.8}{\percent}) of 6\th grade teacher's salary)}
-	{Intervention Program (\SI{9.8}{\percent}) of 6\th grade teacher's salary)}
+	{Intervention Program (\SI{9.8}{\percent}) of 6\supth grade teacher's salary)}
+	{Intervention Program (\SI{9.8}{\percent}) of 6\supth grade teacher's salary)}
 	{7292}
 	{8686}
 
@@ -564,7 +573,7 @@ Explain material differences between Budgeted Expenditures and Estimated Actual 
 
 Describe any changes made to this goal, expected outcomes, metrics, or actions and services to achieve this goal as a result of this analysis and analysis of the LCFF Evaluation Rubrics, as applicable. Identify where those changes can be found in the LCAP.
 \begin{quotation}
-	The only change we are making is the addition of usage of the app ``Remind.'' Some parents have voiced an interest in using a communication app, as a way of sending text alerts. We decided on Remind because most of our graduating 8\th graders will be going to schools within our authorizer's district and the high schools there use Remind. Other than that, we are making no changes. It is our goal to continue to foster an environment where parents feel that they are an integral part of our program and that they have a VOICE at STA.
+	The only change we are making is the addition of usage of the app ``Remind.'' Some parents have voiced an interest in using a communication app, as a way of sending text alerts. We decided on Remind because most of our graduating 8\supth graders will be going to schools within our authorizer's district and the high schools there use Remind. Other than that, we are making no changes. It is our goal to continue to foster an environment where parents feel that they are an integral part of our program and that they have a VOICE at STA.
 \end{quotation}
 
 \Goal
@@ -661,7 +670,7 @@ Describe any changes made to this goal, expected outcomes, metrics, or actions a
 \subsection{Involvement Process for LCAP and Annual Update}
 How, when, and with whom did the LEA consult as part of the planning process for this LCAP/Annual Review and Analysis?
 \begin{quotation}
-	Every month, our school has something that we call STAff chat (STA is our school abbreviation---so it is a play on our initials and the word staff).  The entire staff has attended at least one of these chats as well as almost half of our parents. The principal/8\th grade teacher and 6\th grade teacher have been at all and ran them. At these monthly meetings, we always go over things that we have done as well as any upcoming events. We end each one with a time of discussion---asking parents for input regarding things that we are doing well and areas for improvement. We also specifically address budgetary issues and discuss possible ideas regarding changes for the future. Our parents have been educated on the LCAP and its purpose and given opportunities to provide feedback.
+	Every month, our school has something that we call STAff chat (STA is our school abbreviation---so it is a play on our initials and the word staff).  The entire staff has attended at least one of these chats as well as almost half of our parents. The principal/8\supth grade teacher and 6\supth grade teacher have been at all and ran them. At these monthly meetings, we always go over things that we have done as well as any upcoming events. We end each one with a time of discussion---asking parents for input regarding things that we are doing well and areas for improvement. We also specifically address budgetary issues and discuss possible ideas regarding changes for the future. Our parents have been educated on the LCAP and its purpose and given opportunities to provide feedback.
 
 	Our teachers are not part of a bargaining unit, but all staff (classified and certified) were consulted regarding the LCAP, through STAff chats as well as staff meetings.
 
@@ -677,7 +686,7 @@ How did these consultations impact the LCAP for the upcoming year?
 \begin{quotation}
 	As we anticipated, we have learned, through monthly STAff chats as well as a parent and student surveys, that our field trip program is very important to our parents. They are extremely appreciative of the opportunities afforded to ALL students at the Academy and the fact that everyone gets to attend for free without any fundraising. This has proven to be very popular amongst parents and students. We all see the value that this hands on experience gives to students in their education and will continue to have our field trip budget be one of the largest areas of allotted funds.
 
-	Through these consultations, we found that there were very few areas that stakeholders wished to be changed. The one area that some parents and students did wish we had was sports. We do not run an athletic program. When we explained to parents why we do not participate in the MULES league, they understood. There is also a great opportunity for our 7\th and 8\th grade students to compete for the MUSD middle school whose boundary they reside in, which many of our students have taken advantage of. We have had students compete at Thomas Jefferson, Martin Luther King, and Desmond Middle School in football, volleyball, golf, cross country, wrestling, basketball, track and field, soccer, and swimming.
+	Through these consultations, we found that there were very few areas that stakeholders wished to be changed. The one area that some parents and students did wish we had was sports. We do not run an athletic program. When we explained to parents why we do not participate in the MULES league, they understood. There is also a great opportunity for our 7\supth and 8\supth grade students to compete for the MUSD middle school whose boundary they reside in, which many of our students have taken advantage of. We have had students compete at Thomas Jefferson, Martin Luther King, and Desmond Middle School in football, volleyball, golf, cross country, wrestling, basketball, track and field, soccer, and swimming.
 
 	We are running a program that fosters collaboration and habits of professionalism. Our parents feel that they are integral in their child's education and have found their VOICE. Our students feel safe, accepted, and want to be at school. It appears that all three goals we set are areas that our stakeholders still value and we will continue to work towards making them become an even stronger reality.
 \end{quotation}
@@ -733,9 +742,9 @@ Complete a copy of the following table for each of the LEA's goals. Duplicate th
 	{All}{All Schools}
 	\planaction@action
 	{New}{Modified}{Modified}
-	{Teacher Contracts (including principal/teacher combo role) -- salary + benefits. Only \SI{90.2}{\percent} of 6\th grade teacher as the remaining \SI{9.8}{\percent} is in a different action for intervention.}
-	{Teacher Contracts (including principal/teacher combo role) -- salary + benefits. Only \SI{90.2}{\percent} of 6\th grade teacher as the remaining \SI{9.8}{\percent} is in a different action for intervention.}
-	{Teacher Contracts (including principal/teacher combo role) -- salary + benefits. Only \SI{90.2}{\percent} of 6\th grade teacher as the remaining \SI{9.8}{\percent} is in a different action for intervention.}
+	{Teacher Contracts (including principal/teacher combo role) -- salary + benefits. Only \SI{90.2}{\percent} of 6\supth grade teacher as the remaining \SI{9.8}{\percent} is in a different action for intervention.}
+	{Teacher Contracts (including principal/teacher combo role) -- salary + benefits. Only \SI{90.2}{\percent} of 6\supth grade teacher as the remaining \SI{9.8}{\percent} is in a different action for intervention.}
+	{Teacher Contracts (including principal/teacher combo role) -- salary + benefits. Only \SI{90.2}{\percent} of 6\supth grade teacher as the remaining \SI{9.8}{\percent} is in a different action for intervention.}
 	\planaction@budget
 	{199932}{228701}{254982}
 	{LCFF Base}{LCFF Base}{LCFF Base}
@@ -783,9 +792,9 @@ Complete a copy of the following table for each of the LEA's goals. Duplicate th
 	{All Schools}
 	\planaction@action
 	{New}{Modified}{Modified}
-	{Intervention Program (\SI{9.8}{\percent} of 6\th grade teacher's salary and benefits)}
-	{Intervention Program (\SI{9.8}{\percent} of 6\th grade teacher's salary and benefits)}
-	{Intervention Program (\SI{9.8}{\percent} of 6\th grade teacher's salary and benefits)}
+	{Intervention Program (\SI{9.8}{\percent} of 6\supth grade teacher's salary and benefits)}
+	{Intervention Program (\SI{9.8}{\percent} of 6\supth grade teacher's salary and benefits)}
+	{Intervention Program (\SI{9.8}{\percent} of 6\supth grade teacher's salary and benefits)}
 	\planaction@budget
 	{6468}{7899}{8918}
 	{Supplemental and Concentration}
@@ -1068,6 +1077,6 @@ Complete a copy of the following table for each of the LEA's goals. Duplicate th
 
 \iisup{Renaissance Reading and Math Program and Reward Trip}{8000} The purpose of this is to monitor achievement and growth of all students, LEA-wide. While it is a tool for tracking all students, we will specifically focus on and target EL students with strategies based off of data. The goal of the end of year reward trip is to serve as an extrinsic motivation, in addition to the intrinsic we will be using all year.
 
-\iisup{Field Trip Program}{25000} We believe that getting students in the field of actual businesses, on college campuses, and providing them with enrichment experiences help build character education, habits of professionalism, and more all-around students. We realize that many of these experiences often elude children in our community because of finances. The reason for the increase in funding this year, over the previous two years, is that we will taking all students to a 4 day 3 night Science Camp. All of these experiences are provided to our entire student body population at no cost to the families. This is an integral part of the educational program at the Academy.
+\iisup{Field Trip Program}{25000} We believe that getting students in the field of actual businesses, on college campuses, and providing them with enrichment experiences help build character education, habits of professionalism, and more all-around students. We realize that many of these experiences often elude children in our community because of finances. The reason for the increase in funding this year, over the previous two years, is that we will taking all students to a 4-day 3-night Science Camp. All of these experiences are provided to our entire student body population at no cost to the families. This is an integral part of the educational program at the Academy.
 \end{demIISUP}
 \end{document}
