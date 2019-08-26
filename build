@@ -1,2 +1,0 @@
-#!/bin/bash
-ag -l | entr -c ./make
