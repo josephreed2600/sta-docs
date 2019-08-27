@@ -1,0 +1,29 @@
+#!/bin/bash
+export YYYY=2019
+export MMM=August
+export MM=08
+export M=8
+export DD=20
+export D=20
+export TZ=07
+
+# for the posted date
+export PYYYY=2019
+export PMMM=August
+export PMM=08
+export PM=8
+export PDD=15
+export PD=15
+
+# for the minutes
+export mYYYY=2019
+export mMMM=July
+export mMM=07
+export mM=7
+export mDD=23
+export mD=23
+
+outfile=Board-$MMM-$YYYY.html
+
+envsubst < template.html > $outfile
+html-beautify -rtf $outfile
